@@ -52,24 +52,27 @@ public class MainSurfaceView implements SurfaceHolder.Callback, Runnable {
         int ball_x = 300 , ball_y = 300;
         int block_row = 6;
 
-        //Block配置初期化
-        ArrayList<ArrayList<Integer>> blockList = new ArrayList<ArrayList<Integer>>();
-        for(int i = 0; i < block_row; i++){
-            ArrayList<Integer> blockSubList = new ArrayList<Integer>();
-            blockSubList.add(i*150 + 50);
-            blockSubList.add(100);
-            blockList.add(blockSubList);
+        //初期難易度(normalと仮定する
+        int mode = 2; //1:easy, 2:normal, 3:hard
+        int blockRow = 5, blockCol = 6;
+
+
+        //Block初期配置マトリックス作成
+        ArrayList<DrawItem> blockList = new ArrayList<DrawItem>();
+        for (int i = 0; i < blockCol; i++){
+            for (int j = 0; j < blockRow; j++){
+                DrawItem blocks = new DrawItem(i*150+50, j*100 + 50, -16776961);
+                blockList.add(blocks);
+            }
         }
 
         while(thread != null){
-
             Canvas canvas = holder.lockCanvas();
             canvas.drawColor(Color.BLACK); //背景描写
             doDrawBall(canvas, ball_x, ball_y);
-            for(int i=0; i < block_row; i++){
-                int block_x = blockList.get(i).get(0);
-                int block_y = blockList.get(i).get(1);
-                doDrawBlock(canvas, block_x, block_y);
+            for(int i=0; i < blockList.size(); i++){
+                DrawItem block = blockList.get(i);
+                doDrawBlock(canvas, block.xPoint, block.yPoint, block.color);
             }
             //ball_x += 10;
             //ball_y += 10;
@@ -93,12 +96,12 @@ public class MainSurfaceView implements SurfaceHolder.Callback, Runnable {
         }
     }
 
-    private void doDrawBlock(Canvas canvas, int x, int y){
+    private void doDrawBlock(Canvas canvas, int x, int y, int color){
         if (canvas != null){
             Paint paint = new Paint();
             Rect rect = new Rect(x, y, x+100, y+50);
             paint.setStyle(Paint.Style.FILL);
-            paint.setColor(Color.YELLOW);
+            paint.setColor(color);
             canvas.drawRect(rect, paint);
             /*
             rect.offset(100, 0);
