@@ -3,7 +3,9 @@ package com.websarva.wings.android.blockgame;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
